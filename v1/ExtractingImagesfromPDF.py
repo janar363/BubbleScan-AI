@@ -26,8 +26,14 @@ def extract_images_from_pdf(pdf_path, output_folder):
         else:
             image_filename = f"Image_{page_number-1}.jpg"
 
-        pix = page.get_pixmap(matrix=fitz.Identity, dpi=None, 
-                                colorspace=fitz.csRGB, clip=None, annots=True)
+        original_pix = page.get_pixmap(matrix=fitz.Identity, colorspace=fitz.csRGB, clip=None, annots=True)
+
+        scale_x = 1540 / original_pix.width
+        scale_y = 2000 / original_pix.height
+
+        matrix = fitz.Matrix(scale_x, scale_y)
+
+        pix = page.get_pixmap(matrix=matrix, dpi=None, colorspace=fitz.csRGB, clip=None, annots=True)
         
         # Saving the image
         image_path = os.path.join(pdf_folder, image_filename)
