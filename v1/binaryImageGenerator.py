@@ -1,5 +1,6 @@
 import os
 import cv2
+from enhanceBinaryImage import EnhanceBinaryImage
 
 def generateBinaryImage(sourceFolder, destFolder):
 
@@ -9,6 +10,9 @@ def generateBinaryImage(sourceFolder, destFolder):
     # Creating output folder 
     if not os.path.exists(destFolder):
         os.makedirs(destFolder)
+
+    if not os.path.exists(destFolder+'enhanced/'):
+        os.makedirs(destFolder+'enhanced/')
 
     # for each file
     for file in files:
@@ -36,12 +40,18 @@ def generateBinaryImage(sourceFolder, destFolder):
                     if is_not_valid((rid+direction[0], cid+direction[1])): continue
 
                     if grayscaleImg[rid+direction[0]][cid+direction[1]] < min_pix:
-                        min_pix = grayscaleImg[cid+direction[0]][cid+direction[1]]
+                        min_pix = grayscaleImg[rid+direction[0]][cid+direction[1]]
 
+                # min pix < 100 : out lines using dots
+                # min pix < 95 : 
+                outputImg[rid][cid] = 255 if min_pix < 85 else 0
 
-                outputImg[rid][cid] = 255 if min_pix < 90 else 0
 
         cv2.imwrite(destFolder+file, outputImg)
+
+        outputImg = EnhanceBinaryImage(outputImg)
+
+        cv2.imwrite(destFolder+'enhanced/'+file, outputImg)
 
 
 generateBinaryImage('exampleScans/', 'binaryExampleScans/')

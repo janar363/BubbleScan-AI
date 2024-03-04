@@ -33,7 +33,7 @@ def extract_images_from_pdf(pdf_path, output_folder):
 
         matrix = fitz.Matrix(scale_x, scale_y)
 
-        pix = page.get_pixmap(matrix=matrix, dpi=None, colorspace=fitz.csRGB, clip=None, annots=True)
+        pix = page.get_pixmap(matrix=matrix, dpi=300, colorspace=fitz.csRGB, clip=None, annots=True)
         
         # Saving the image
         image_path = os.path.join(pdf_folder, image_filename)
