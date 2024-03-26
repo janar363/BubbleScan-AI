@@ -118,5 +118,5 @@ def process_folder(folder_path):
         else:
             print("Could not find both center box and bottom box to base the rotation on for image:", image_path)
 
-folder_path = 'test'
+folder_path = 'testAlignment'
 process_folder(folder_path)
